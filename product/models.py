@@ -24,6 +24,7 @@ class Thumb(models.Model):
         return self.thumb.manufacturer.name
     manufacturer_list.short_description = '제조사'
     
+    
 class Manufacturer(models.Model):
     name = models.CharField(max_length=100, unique=True, db_index=True)
     image = models.ImageField(upload_to='manufacturer', blank=True, help_text='제조사 로고이미지')
@@ -35,6 +36,17 @@ class Manufacturer(models.Model):
         
     def __str__(self):
         return self.name
+
+
+class ProductVolumeOptions(models.Model):
+    ''' 
+        단말기 용량을 가진다.
+        단말기 용량별 색상과 출고가는 달라질 수 있다.
+        통신사별로도 출시색상과 용량이 달라질 수 있다.
+    '''
+    name = models.CharField(max_length=30)
+    volume = models.CharField(max_length=30)
+    price = models.PositiveSmallIntegerField(default=0)
         
 
 class Product(models.Model):
@@ -44,6 +56,7 @@ class Product(models.Model):
     price = models.PositiveSmallIntegerField()
     thumbnail = models.OneToOneField(Thumb, on_delete=models.CASCADE, related_name='thumb')
     manufacturer = models.ForeignKey(Manufacturer, null=True, on_delete=models.SET_NULL, related_name='product')
+    volume = models.ForeignKey(ProductVolumeOptions, null=True, on_delete=models.CASCADE, related_name='productvolume')
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

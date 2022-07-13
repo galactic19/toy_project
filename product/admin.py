@@ -2,16 +2,10 @@ from django.contrib import admin
 from .models import Product, Thumb, Manufacturer
 
 
-# @admin.register(Product)
-# class ProductAdmin(admin.ModelAdmin):
-#     list_display = ['name', 'model_name', 'price']
-#     prepopulated_fields = {'slug':('name',)}
-#     verbose_name = '상품 등록'
-
-
 class ProductStackedInline(admin.StackedInline):
     model = Product
     verbose_name = '모델등록'
+    prepopulated_fields = {"slug":('name',)}
 
 
 @admin.register(Thumb)
