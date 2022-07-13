@@ -15,14 +15,14 @@ class Ltetype(models.Model):
 
 class Plan(models.Model):
     telecom = models.ForeignKey(Telecom, on_delete=models.CASCADE)
-    ltetype = models.ForeignKey(Ltetype, on_delete=models.SET_NULL)
+    ltetype = models.ForeignKey(Ltetype, null=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=100, unique=True, db_index=True)
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
     price = models.PositiveSmallIntegerField()
     discount_money = models.PositiveSmallIntegerField()
     discount_add_money = models.PositiveSmallIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_ad = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         ordering = ['-created_at', '-updated_at', 'name']

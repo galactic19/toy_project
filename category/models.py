@@ -8,7 +8,7 @@ class Category(models.Model):
     description = models.CharField(max_length=200, blank=True)
     meta_description = models.CharField(max_length=120, blank=True)
     image = models.ImageField(upload_to='category/%Y/%m/%d', blank=True)
-    parent = models.ForeignKey('self', null=True, default=None)
+    parent = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
     # sequence = models. 별도의 메서드를 생성해야 할듯.
     
     class Meta:
