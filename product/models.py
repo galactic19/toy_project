@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.db import models
 from django.urls import reverse
 
@@ -18,12 +19,15 @@ class Thumb(models.Model):
     
     def prd_price(self):
         return self.thumb.price
-    prd_price.short_description='출고가'
+    prd_price.short_description='기본 출고가'
     
     def manufacturer_list(self):
         return self.thumb.manufacturer.name
     manufacturer_list.short_description = '제조사'
     
+    def model_volume(self):
+        return self.thumb.volume
+    model_volume.short_description = '용량 및 가격'
     
 class Manufacturer(models.Model):
     name = models.CharField(max_length=100, unique=True, db_index=True)
@@ -47,6 +51,12 @@ class ProductVolumeOptions(models.Model):
     name = models.CharField(max_length=30)
     volume = models.CharField(max_length=30)
     price = models.PositiveSmallIntegerField(default=0)
+    
+    class Meta:
+        verbose_name_plural ='단말 모델 옵션/용량 관리'
+        
+    def __str__(self):
+        return f"{self.name} ({self.volume} / {self.price}원)"
         
 
 class Product(models.Model):
@@ -56,7 +66,7 @@ class Product(models.Model):
     price = models.PositiveSmallIntegerField()
     thumbnail = models.OneToOneField(Thumb, on_delete=models.CASCADE, related_name='thumb')
     manufacturer = models.ForeignKey(Manufacturer, null=True, on_delete=models.SET_NULL, related_name='product')
-    volume = models.ForeignKey(ProductVolumeOptions, null=True, on_delete=models.CASCADE, related_name='productvolume')
+    volume = models.ManyToManyField(ProductVolumeOptions, related_name='productvolume')
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
