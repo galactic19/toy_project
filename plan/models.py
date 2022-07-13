@@ -14,8 +14,8 @@ class Ltetype(models.Model):
 
 
 class Plan(models.Model):
-    telecom = models.ForeignKey(Telecom, on_delete=models.CASCADE)
-    ltetype = models.ForeignKey(Ltetype, null=True, on_delete=models.SET_NULL)
+    telecom = models.ForeignKey(Telecom, on_delete=models.CASCADE, related_name='telecom')
+    ltetype = models.ForeignKey(Ltetype, null=True, on_delete=models.SET_NULL, related_name='ltetype')
     name = models.CharField(max_length=100, unique=True, db_index=True)
     slug = models.SlugField(max_length=100, unique=True, allow_unicode=True)
     price = models.PositiveSmallIntegerField()
@@ -26,6 +26,6 @@ class Plan(models.Model):
     
     class Meta:
         ordering = ['-created_at', '-updated_at', 'name']
-        
+
     def __str__(self):
         return self.name

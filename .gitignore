@@ -64,6 +64,8 @@ manage.py
 config/settings.py
 config/asgi.py
 config/wsgi.py
+media/
+migrations/
 
 # Flask stuff:
 instance/
